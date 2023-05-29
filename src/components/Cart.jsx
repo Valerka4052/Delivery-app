@@ -1,12 +1,12 @@
-export const Cart = () => {
-    const addToCart = ()=>{console.log('cart added');}
+export const Cart = ({ item, addToCart }) => {
+    const { imageURL, dish } = item;
     return (
         <div>
-            <div><img src="https://upload.wikimedia.org/wikipedia/commons/9/90/No_image_available_600_x_400.svg" alt="image" width={300}height={200} /></div>
+            <div><img src={imageURL} alt={dish} width={300} height={200} /></div>
             <div>
-                <p>burger name</p>
-            <button onClick={addToCart}>add to cart</button>
+                <p>{dish}</p>
+                <button onClick={() => addToCart(item)}>add to cart</button>
             </div>
-                    </div>
-    )
-}
+        </div>
+    );
+};
