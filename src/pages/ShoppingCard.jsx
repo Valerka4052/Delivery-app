@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { OrderCart } from "../components/OrderCart";
+import { createOrder } from "../api";
 const userInitialValues = {
     address: '',
     email: '',
@@ -11,9 +12,21 @@ export const ShopingCard = () => {
     const persistOrder = JSON.parse(localStorage.getItem("order"))
     const [orders, setOrders] = useState(persistOrder ? persistOrder : []);
     const [userIformation, setUserIformation] = useState(userInitialValues);
+    const getCout = (id, value) => {
+        const addCount = orders.map(item => item._id === id ? { ...item, count: value } : { ...item });
+        window.localStorage.setItem("order", JSON.stringify(addCount));
+        setOrders(addCount);
+    }
+
+    const total = orders.reduce((acc, item) => { return acc + (item.count * item.price) }, 0);
+
     const getUserInfo = (e) => { setUserIformation(prev => ({ ...prev, [e.target.name]: e.target.value })) };
-    const submitOrder = () => {
-        userIformation(userInitialValues);
+    const submitOrder = async () => {
+        const sendOrder = { ...userIformation, dishes: orders, total: total }
+        console.log('sendOrder',sendOrder);
+        await createOrder(sendOrder)
+        // console.log('sendOrder', sendOrder);
+        setUserIformation(userInitialValues);
         setOrders([]);
         window.localStorage.removeItem("order")
     };
@@ -21,6 +34,7 @@ export const ShopingCard = () => {
         setOrders([]);
         window.localStorage.removeItem("order");
     };
+    if (!orders) return;
     return (
         <div style={{ display: "flex", }}>
             <form style={{ display: "flex", flexDirection: "column", border: '1px solid white' }} >
@@ -31,9 +45,9 @@ export const ShopingCard = () => {
             </form>
             <div>
                 <div style={{ border: '1px solid white', width: 800, height: 800 }}>
-                    {orders.length>0 ? orders.map(item => <OrderCart item={item} key={item._id} />): <p>no orders yet</p> }
+                    {orders.length > 0 ? orders.map(item => <OrderCart orders={orders} getCout={getCout} item={item} key={item._id} />) : <p>no orders yet</p>}
                 </div>
-                <div><p>total: 200$</p><button onClick={submitOrder}>submit</button><button onClick={discard}>discard</button></div>
+                <div><p>total: {total}uah</p><button onClick={submitOrder}>submit</button><button onClick={discard}>discard</button></div>
             </div>
         </div>
     );

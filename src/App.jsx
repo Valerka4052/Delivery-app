@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom'
 import { Shop } from './pages/Shop'
 import { ShopingCard } from './pages/ShoppingCard'
 import { ErrorPage }  from './pages/ErrorPage'
+import { HistoryPage } from './pages/HistoryPage'
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Shop />} />
         <Route path='/card' element={<ShopingCard />} />
+         <Route path='/history' element={<HistoryPage />} />
         <Route path='/*' element={<ErrorPage />} />
       </Routes>
     </>

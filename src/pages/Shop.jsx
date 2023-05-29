@@ -1,25 +1,27 @@
 import { useEffect, useState } from "react";
 import { Cart } from "../components/Cart"
 import { ShopButton } from "../components/ShopButton"
-import { getAllDishes, getAllDishesByShop } from "../../api";
+import { getAllShops, getAllDishesByShop } from "../api";
 
 export const Shop = () => {
     const [dishes, setDishes] = useState([]);
     const [brand, setBrand] = useState([]);
     useEffect(() => {
-        if (JSON.parse(localStorage.getItem('order'))) { setBrand([JSON.parse(localStorage.getItem('order'))[0].brand]) }
+        const persistOrder = JSON.parse(localStorage.getItem("order"))
+        if (persistOrder) { setBrand([persistOrder[0].brand]) }
         else
-        { getAllDishes().then(res => { setBrand(res.data); }).catch(err => console.log(err)); }
+        { getAllShops().then(res => { setBrand(res.data); }).catch(err => console.log(err)); }
     }, []);
     useEffect(() => {
           if (brand.length === 1) getAllDishesByShop(brand[0]).then(res => { setDishes(res.data); }).catch(err => console.log(err));
            }, [brand]);
     const getBrandDishes = async (e) => {
         await getAllDishesByShop(e.target.innerText).then(res => { setDishes(res.data); }).catch(err => console.log(err));
-    }
+    };
      const addToCart = (item) => {
        const existingArray = JSON.parse(localStorage.getItem('order')) || [];
-        existingArray.push(item);
+         if (existingArray.some(dish => dish._id === item._id)) return;
+             existingArray.push({ ...item, count: 0 });
          window.localStorage.setItem("order", JSON.stringify(existingArray));
          setBrand([item.brand]);
     };
@@ -37,28 +39,3 @@ export const Shop = () => {
     );
 };
 
-// export const Shop = () => {
-//     const [dishes, setDishes] = useState([]);
-//     const [brand, setBrand] = useState('');
-//     const categoryButtons = [...new Set(dishes.map(obj => obj.brand))];
-//     useEffect(() => {
-//         getAllDishes().then(res => { setDishes(res.data); }).catch(err => console.log(err));
-//     }, []);
-//     const getBrandDishes = (e) => {
-//         console.log(e.target.innerText);
-//         setBrand(e.target.innerText);
-//     }
-//     let brandDishes = dishes.filter(item => item.brand === brand);
-//     if (!brand) brandDishes = [];
-//        if (!dishes) return;
-//     return (
-//         <div style={{ display: 'flex' }}>
-//             <div style={{ display: "flex", flexDirection: "column" }}>
-//                 {categoryButtons.map((item, idx) => <ShopButton key={idx} getBrandDishes={getBrandDishes} brand={item} />)}
-//             </div>
-//             <div style={{ display: 'flex', flexWrap: "wrap" }}>
-//                 {brandDishes.map((item) => <Cart key={item._id} item={item} />)}
-//             </div>
-//         </div>
-//     );
-// };
