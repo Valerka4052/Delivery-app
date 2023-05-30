@@ -1,5 +1,5 @@
 import axios from 'axios'
-axios.defaults.baseURL = 'http://localhost:4444';
+axios.defaults.baseURL = 'https://delivery-app-backend-wxdf.onrender.com';
 export const getAllShops = async () => {
     try {
         const data = await axios.get('/shop/all');
