@@ -4,10 +4,10 @@
 Цей проект є тестовим завданням і містить в собі реалізацію магазину замовлень і доставки їжі
 
 
-посилання на живу сторінку https://valerka4052.github.io/Delivery-app/card
+посилання на живу сторінку https://valerka4052.github.io/Delivery-app/
 
 
-посилання на бекенд https://github.com/Valerka4052/Delivery-app-backend залитий на render.com
+посилання на бекенд https://github.com/Valerka4052/Delivery-app-backend залитий на render.com з використанням mongoDB
 
 
 Є три сторінки сайту:
