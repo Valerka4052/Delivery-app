@@ -1,13 +1,11 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { OrderCart } from "../../components/OrderCart/OrderCart";
-import { createOrder, recaptca } from "../../api";
+import { createOrder } from "../../api";
 import { Form } from "../../components/Form/Form";
 import { Container, OrdersContainer, TextNoOrders, TotalContainer, TotalText } from "./ShoppingCard.styled";
 import { Button } from "../../components/Cart/Cart.styled";
 import { Loader } from "../../components/Loader/Loader";
 import ReCAPTCHA from "react-google-recaptcha";
-// import { GoogleReCaptcha } from "react-google-recaptcha-v3";
-
 
 const userInitialValues = {
     address: '',
@@ -39,15 +37,13 @@ export const ShopingCard = () => {
         if (!userIformation.address || !userIformation.email || !userIformation.name || !userIformation.phone) {
             setVisibleCapcha(false);
             return alert('please fill in all fields')
-        };
+        }
         const filteredDishes = orders.filter(item => item.count > 0);
         if (filteredDishes.length === 0) {
             setVisibleCapcha(false);
             return alert('you have no items to order');
         }
-        //  const filteredDishes = orders.filter(item => item.count > 0);
         const sendOrder = { ...userIformation, dishes: filteredDishes, total: total };
-        console.log('sendOrder', sendOrder);
         setLoading(true)
         await createOrder(sendOrder);
         setLoading(false);

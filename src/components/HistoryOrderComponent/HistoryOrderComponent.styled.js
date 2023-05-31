@@ -6,7 +6,6 @@ height:220px;
 margin-bottom:10px;
 background-color:sienna;
 border: 1px solid sienna;
-/* border:1px solid red; */
 `;
 export const ImgContainer = styled.div`
 width:150px;
