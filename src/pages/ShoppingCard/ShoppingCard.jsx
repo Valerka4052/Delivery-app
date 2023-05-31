@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { OrderCart } from "../../components/OrderCart/OrderCart";
-import { createOrder } from "../../api";
+import { createOrder, recaptca } from "../../api";
 import { Form } from "../../components/Form/Form";
 import { Container, OrdersContainer, TextNoOrders, TotalContainer, TotalText } from "./ShoppingCard.styled";
 import { Button } from "../../components/Cart/Cart.styled";
 import { Loader } from "../../components/Loader/Loader";
+import ReCAPTCHA from "react-google-recaptcha";
+// import { GoogleReCaptcha } from "react-google-recaptcha-v3";
+
 
 const userInitialValues = {
     address: '',
@@ -16,6 +19,8 @@ const userInitialValues = {
 export const ShopingCard = () => {
     const persistOrder = JSON.parse(localStorage.getItem("order"))
     const [loading, setLoading] = useState(false);
+    const [visibleCapcha, setVisibleCapcha] = useState(false);
+
     const [orders, setOrders] = useState(persistOrder ? persistOrder : []);
     const [userIformation, setUserIformation] = useState(userInitialValues);
     const getCout = (id, value) => {
@@ -29,6 +34,30 @@ export const ShopingCard = () => {
         setOrders(filteredOrder);
     };
 
+    const onChange = async (value) => {
+        console.log("Captcha value:", value);
+        if (!userIformation.address || !userIformation.email || !userIformation.name || !userIformation.phone) {
+            setVisibleCapcha(false);
+            return alert('please fill in all fields')
+        };
+        const filteredDishes = orders.filter(item => item.count > 0);
+        if (filteredDishes.length === 0) {
+            setVisibleCapcha(false);
+            return alert('you have no items to order');
+        }
+        //  const filteredDishes = orders.filter(item => item.count > 0);
+        const sendOrder = { ...userIformation, dishes: filteredDishes, total: total };
+        console.log('sendOrder', sendOrder);
+        setLoading(true)
+        await createOrder(sendOrder);
+        setLoading(false);
+        setUserIformation(userInitialValues);
+        setOrders([]);
+        window.localStorage.removeItem("order")
+        setVisibleCapcha(false)
+    };
+
+
     const total = orders.reduce((acc, item) => { return acc + (item.count * item.price) }, 0);
 
     const getUserInfo = (e) => { setUserIformation(prev => ({ ...prev, [e.target.name]: e.target.value })) };
@@ -37,19 +66,15 @@ export const ShopingCard = () => {
         if (!userIformation.address || !userIformation.email || !userIformation.name || !userIformation.phone) return alert('please fill in all fields')
         const filteredDishes = orders.filter(item => item.count > 0);
         if (filteredDishes.length === 0) return alert('you have no items to order')
-        const sendOrder = { ...userIformation, dishes: filteredDishes, total: total };
-        console.log('sendOrder', sendOrder);
-        setLoading(true)
-        await createOrder(sendOrder)
-        setLoading(false)
-        setUserIformation(userInitialValues);
-        setOrders([]);
-        window.localStorage.removeItem("order")
+       setVisibleCapcha(true)
+       
     };
     const discard = () => {
         setOrders([]);
         window.localStorage.removeItem("order");
+        setVisibleCapcha(false)
     };
+
     if (!orders) return;
     return (
         <Container>
@@ -64,12 +89,17 @@ export const ShopingCard = () => {
                         </>
                         {orders.length > 0 &&
                             <TotalContainer>
+                              
                                 <TotalText>total: {total} uah</TotalText>
-                                <Button onClick={discard}>discard</Button>
-                                <Button onClick={submitOrder}>submit</Button>
+                                {visibleCapcha && <ReCAPTCHA sitekey="6LcPRlQmAAAAAGU3lC1OnEZOnlqDhLmJUr3-A6Bl" onChange={onChange} />}
+                                <div>
+                                    <Button onClick={discard}>discard</Button>
+                                    <Button onClick={submitOrder}>submit</Button>
+                                </div>
                             </TotalContainer>}
                     </OrdersContainer>
                 </>}
         </Container>
     );
 };
+

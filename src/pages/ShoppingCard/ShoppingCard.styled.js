@@ -15,7 +15,10 @@ font-size:24px;
 font-weight:700;
 `
 export const TotalContainer = styled.div`
-
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
 `
 export const TotalText = styled.p`
 font-size:20px;

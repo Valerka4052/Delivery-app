@@ -6,6 +6,8 @@ import { ShopingCard } from './pages/ShoppingCard/ShoppingCard'
 import { ErrorPage }  from './pages/ErrorPage/ErrorPage'
 import { HistoryPage } from './pages/HistoryPage/HistoryPage'
 
+
+
 function App() {
   return (
     <>
@@ -21,3 +23,4 @@ function App() {
 }
 
 export default App
+// 6LcPRlQmAAAAAGU3lC1OnEZOnlqDhLmJUr3-A6Bl
