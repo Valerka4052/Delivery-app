@@ -5,7 +5,7 @@ export const getAllShops = async () => {
         const data = await axios.get('/shop/all');
         return data
     } catch (error) {
-        console.log(error.messge);
+        console.log(error);
     }
 };
 
@@ -14,7 +14,7 @@ export const getAllDishesByShop = async (shop) => {
         const data = await axios.post('/shop', { shop: shop });
         return data
     } catch (error) {
-        console.log(error.messge);
+        console.log(error);
     }
 };
 
@@ -23,7 +23,7 @@ export const createOrder = async (order) => {
         const data = await axios.post('/order', order);
         return data
     } catch (error) {
-        console.log(error.messge);
+        console.log(error);
     }
 };
 
@@ -32,7 +32,7 @@ export const findOrders = async ({email,phone}) => {
         const data = await axios.patch('/order', {email,phone});
         return data
     } catch (error) {
-        console.log(error.messge);
+        console.log(error);
     }
 };
 

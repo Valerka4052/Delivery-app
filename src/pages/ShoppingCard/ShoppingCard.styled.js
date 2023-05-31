@@ -6,7 +6,7 @@ justify-content:space-between;
 
 `
 export const OrdersContainer = styled.div`
-width:70%;
+width:60%;
 padding:10px;
 border-left:1px solid black;
 `
@@ -30,4 +30,13 @@ text-transform:uppercase;
 &:not(:last-of-type){
 margin-right:20px;
     }
+`;
+export const InfoBox = styled.div`
+width:40%;
+padding-top:20px ;
+padding-right:10px;
+display:flex;
+flex-direction:column;
+justify-content:flex-start;
+align-items:center;
 `;

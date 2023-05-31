@@ -19,7 +19,7 @@ export const Shop = () => {
             setLoading(true);
             getAllShops()
                 .then(res => {
-                    console.log(res); setBrand(res.data);
+                    setBrand(res.data);
                     setLoading(false)
                 })
                 .catch(err => console.log(err));

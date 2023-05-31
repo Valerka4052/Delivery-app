@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
-width:30%;
+width:100%;
 padding:10px;
 `;
 export const Input = styled.input`
       display: block;
-      width: 80%;
+      width: 90%;
       height: calc(2.25rem + 2px);
       padding: 0.375rem 0.75rem;
       margin-bottom:16px;
@@ -40,4 +40,10 @@ export const Input = styled.input`
       background-color: #f5f5f5;
       opacity: 1;
     }
+`;
+
+export const Item = styled.li`
+text-align:start;
+list-style:none;
+cursor: pointer;
 `;

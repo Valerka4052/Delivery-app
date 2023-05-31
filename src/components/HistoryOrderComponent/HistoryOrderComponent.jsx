@@ -7,7 +7,7 @@ export const HistoryOrderComponent = ({ order }) => {
             <CardsContainer>
                 {dishes.map((item) => <Card item={item} key={item._id} />)}
             </CardsContainer>
-            <TotalBox><p>total: {total} uah</p></TotalBox>
+            <TotalBox><p>Total: {total} uah</p></TotalBox>
         </OrderBox>
     );
 };

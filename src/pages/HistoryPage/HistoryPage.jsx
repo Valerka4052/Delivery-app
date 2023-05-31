@@ -15,16 +15,17 @@ export const HistoryPage = () => {
     const [userIformation, setUserIformation] = useState(userInitialValues);
     const [orders, setOrders] = useState([]);
     const getUserInfo = (e) => { setUserIformation(prev => ({ ...prev, [e.target.name]: e.target.value })) };
+
     const handleSubmit = async () => {
-        if (!userIformation.email || !userIformation.phone) alert('Fill in all the fields')
+        if (!userIformation.email || !userIformation.phone) {
+            return alert('Fill in all the fields')
+        }
         setLoading(true)
-        const searchOrders = await findOrders(userIformation)
+        const searchOrders = await findOrders(userIformation);
         setLoading(false)
-        console.log('searchOrders', searchOrders);
-        if (!searchOrders.data.length) alert('you have no orders')
+        if (!searchOrders || !searchOrders.data.length) { return alert('you have no orders') };
         setOrders(searchOrders.data)
         setUserIformation(userInitialValues)
-         
     };
     if (!orders) return;
     return (
@@ -37,9 +38,10 @@ export const HistoryPage = () => {
                         <Input type="tel" placeholder="phone" name="phone" value={userIformation.phone} onChange={(e) => getUserInfo(e)} />
                         <Button type="button" onClick={handleSubmit}>search</Button>
                     </FormBox>
-                    <OrdersBox>
-                        {orders.map(order => { return <HistoryOrderComponent order={order} key={order._id} /> })}
-                    </OrdersBox>
+                    {orders.length > 0 &&
+                        <OrdersBox>
+                            {orders.map(order => { return <HistoryOrderComponent order={order} key={order._id} /> })}
+                        </OrdersBox>}
                 </>}
         </Container>
     );
