@@ -9,7 +9,6 @@ import { useEffect } from "react";
 
 export const Form = ({ getUserInfo, userIformation, getAdress, getCoords, isLoaded }) => {
     const {
-        value,
         suggestions: { status, data },
         setValue,
         init,
@@ -26,8 +25,8 @@ export const Form = ({ getUserInfo, userIformation, getAdress, getCoords, isLoad
 
     const handleInput = (e) => {
         setValue(e.target.value);
-        getUserInfo(e)
-    };
+        getUserInfo(e);
+    }
 
     const handleSelect = ({ description }) =>
         () => {
@@ -60,7 +59,7 @@ export const Form = ({ getUserInfo, userIformation, getAdress, getCoords, isLoad
     return (
         <Container >
             <div ref={ref}>
-                <Input type="text" placeholder="address" name="address" value={value} onChange={handleInput} /> {status === "OK" && <ul>{renderSuggestions()}</ul>}</div>
+                <Input type="text" placeholder="address" name="address" value={userIformation.address} onChange={handleInput} /> {status === "OK" && <ul>{renderSuggestions()}</ul>}</div>
             <Input type="email" placeholder="email" name="email" value={userIformation.email} onChange={(e) => getUserInfo(e)} />
             <Input type="tel" placeholder="phone" name="phone" value={userIformation.phone} onChange={(e) => getUserInfo(e)} />
             <Input type="text" placeholder="name" name="name" value={userIformation.name} onChange={(e) => getUserInfo(e)} />

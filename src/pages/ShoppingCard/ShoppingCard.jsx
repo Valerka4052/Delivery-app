@@ -18,13 +18,13 @@ const userInitialValues = {
 const libraries = ['places'];
  
 export const ShopingCard = () => {
-    const persistOrder = JSON.parse(localStorage.getItem("order"))
+    let persistOrder = JSON.parse(localStorage.getItem("order"))
+     if (!persistOrder) persistOrder = [];
     const [loading, setLoading] = useState(false);
     const [visibleCapcha, setVisibleCapcha] = useState(false);
     const [orders, setOrders] = useState(persistOrder ? persistOrder : []);
     const [userIformation, setUserIformation] = useState(userInitialValues);
-    const [center, setCenter] = useState({ lat: 50.4501, lng: 30.5234 });
-   
+    const [center, setCenter] = useState({lat: 50.4364485627181, lng: 30.506609915099876});
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
@@ -90,7 +90,7 @@ export const ShopingCard = () => {
             {loading ? <Loader /> :
                 <>
                     <InfoBox>
-                        {isLoaded ? <Map center={center} /> : <Loader />}
+                        {isLoaded ? <Map orders={orders} getAdress={getAdress} getCoords={getCoords} center={center} /> : <Loader />}
                         <Form isLoaded={isLoaded} getUserInfo={getUserInfo} getAdress={getAdress} getCoords={getCoords} userIformation={userIformation} />
                     </InfoBox>
                     <OrdersContainer>
